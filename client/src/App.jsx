@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [cppServiceData, setCppServiceData] = useState('');
+
+  useEffect(() => {
+    fetch('http://localhost:3000/cpp-service')
+      .then(response => response.text())
+      .then(data => {
+        setCppServiceData(data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  const handlePostRequest = () => {
+    fetch('http://localhost:3000/cpp-service-post', { method: 'POST' })
+      .then(response => response.text())
+      .then(data => {
+        console.log('Post response:', data);
+      })
+      .catch(error => {
+        console.error('Error posting data:', error);
+      });
+  };
 
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {/* Existing content */}
+        <button onClick={handlePostRequest}>Send POST Request</button>
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        {/* Existing button */}
       </div>
       <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+        {/* Existing content */}
       </p>
+      {/* Display data from C++ service */}
+      {cppServiceData && <p>Data from C++ Service: {cppServiceData}</p>}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

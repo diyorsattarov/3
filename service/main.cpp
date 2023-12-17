@@ -12,26 +12,59 @@ namespace http = beast::http;
 namespace net = boost::asio;
 using tcp = net::ip::tcp;
 
-const std::string response_text = "Hello from C++ microservice";
+const std::string response_text = "Hello from C++ microservice123";
 
-void handle_request(http::request<http::string_body>&& req, http::response<http::string_body>&& res, tcp::socket& socket) {
+void handle_get(const std::string& target, http::response<http::string_body>& res) {
+    if (target == "/") {
+        res.body() = "Root path";
+    } else if (target == "/hello") {
+        res.body() = "Hello, world!";
+    } else {
+        res.result(http::status::not_found);
+        res.body() = "Not Found";
+    }
+}
+
+void handle_post(const std::string& target, http::response<http::string_body>& res) {
+    if (target == "/data") {
+        // Process POST data here
+        res.body() = "Data received";
+    } else {
+        res.result(http::status::not_found);
+        res.body() = "Not Found";
+    }
+}
+
+void handle_request(http::request<http::string_body>&& req, http::response<http::string_body>& res) {
+    // Set common headers
     res.set(http::field::server, BOOST_BEAST_DEPRECATION_STRING);
     res.set(http::field::content_type, "text/plain");
-    res.keep_alive(req.keep_alive());
-    res.body() = response_text;
-    res.prepare_payload();
-    http::write(socket, res);
+
+    // Dispatch based on method and path
+    if (req.method() == http::verb::get) {
+        handle_get(req.target().to_string(), res);
+    } else if (req.method() == http::verb::post) {
+        handle_post(req.target().to_string(), res);
+    } else {
+        // Handle other HTTP methods or return a method not allowed error
+        res.result(http::status::method_not_allowed);
+        res.body() = "Method Not Allowed";
+    }
+
+    res.prepare_payload();  // Ensure the payload is prepared correctly
 }
 
 void do_session(tcp::socket& socket) {
     beast::flat_buffer buffer;
     http::request<http::string_body> req;
-    http::response<http::string_body> res{http::status::ok, req.version()};
 
     http::read(socket, buffer, req);
-    handle_request(std::move(req), std::move(res), socket);
-}
 
+    http::response<http::string_body> res{http::status::ok, req.version()};
+    handle_request(std::move(req), res);
+
+    http::write(socket, res);
+}
 int main() {
     try {
         auto const address = net::ip::make_address("0.0.0.0");
