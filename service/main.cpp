@@ -12,11 +12,9 @@ namespace http = beast::http;
 namespace net = boost::asio;
 using tcp = net::ip::tcp;
 
-const std::string response_text = "Hello from C++ microservice123";
-
 void handle_get(const std::string& target, http::response<http::string_body>& res) {
     if (target == "/") {
-        res.body() = "Root path";
+        res.body() = "Hello from C++ microservice";
     } else if (target == "/hello") {
         res.body() = "Hello, world!";
     } else {

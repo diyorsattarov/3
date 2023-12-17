@@ -8,7 +8,7 @@ function App() {
   const [cppServiceData, setCppServiceData] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3000/cpp-service')
+    fetch('http://localhost:3000/hello')
       .then(response => response.text())
       .then(data => {
         setCppServiceData(data);

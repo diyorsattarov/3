@@ -29,6 +29,16 @@ app.get('/cpp-service', async (req, res) => {
   }
 });
 
+app.get('/hello', async (req, res) => {
+  try {
+    const response = await axios.get('http://service:8080/hello');
+    res.send(response.data);
+  } catch (error) {
+    console.error('Error fetching data from C++ service:', error);
+    res.status(500).send('Error fetching data from C++ service');
+  }
+});
+
 app.post('/cpp-service-post', async (req, res) => {
   try {
     // Here you can add data to be sent to the C++ service
