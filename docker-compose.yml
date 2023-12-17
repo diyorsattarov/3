@@ -19,3 +19,7 @@ services:
     build: ./service
     ports:
       - "8080:8080"
+  microservice:
+    build: ./microservice
+    ports:
+      - "5555:5555"
