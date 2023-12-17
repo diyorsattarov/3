@@ -1,7 +1,7 @@
 # Use a base image with a C++ environment
 FROM debian:11
 
-# Install g++, make, cmake, git, and Boost libraries
+# Install g++, make, cmake, git, and libevent libraries
 RUN apt-get update && apt-get install -y \
     g++ \
     make \
@@ -22,4 +22,4 @@ RUN cmake . && make all
 EXPOSE 8080
 
 # Command to run the executable
-CMD ["./service"]
+CMD ["./microservice"]
