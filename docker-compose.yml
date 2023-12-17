@@ -15,7 +15,7 @@ services:
       - "3000:3000"
   client:
     build: ./client
-  service:
+  microservice:
     build: ./microservice
     ports:
       - "8080:8080"

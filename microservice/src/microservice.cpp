@@ -14,12 +14,12 @@ using tcp = net::ip::tcp;
 
 void handle_get(const std::string& target, http::response<http::string_body>& res) {
     if (target == "/") {
-        res.body() = "Hello from C++ microservice";
+        res.body() = "Hello from C++ microservice1";
     } else if (target == "/hello") {
-        res.body() = "Hello, world!";
+        res.body() = "Hello, world!2";
     } else {
         res.result(http::status::not_found);
-        res.body() = "Not Found";
+        res.body() = "Not Found3";
     }
 }
 

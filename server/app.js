@@ -21,7 +21,7 @@ app.get('/api/data', (req, res) => {
 // Route to fetch data from the C++ microservice
 app.get('/cpp-service', async (req, res) => {
   try {
-    const response = await axios.get('http://service:8080/');
+    const response = await axios.get('http://microservice:8080/');
     res.send(response.data);
   } catch (error) {
     console.error('Error fetching data from C++ service:', error);
@@ -31,7 +31,7 @@ app.get('/cpp-service', async (req, res) => {
 
 app.get('/hello', async (req, res) => {
   try {
-    const response = await axios.get('http://service:8080/hello');
+    const response = await axios.get('http://microservice:8080/hello');
     res.send(response.data);
   } catch (error) {
     console.error('Error fetching data from C++ service:', error);

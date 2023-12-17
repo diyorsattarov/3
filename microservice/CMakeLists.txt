@@ -9,4 +9,4 @@ add_executable(microservice src/microservice.cpp)
  find_package(Boost 1.71.0 REQUIRED COMPONENTS system thread)
 
 # Link Boost libraries
- target_link_libraries(service PRIVATE Boost::system Boost::thread)
+ target_link_libraries(microservice PRIVATE Boost::system Boost::thread)
